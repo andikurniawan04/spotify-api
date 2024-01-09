@@ -8,9 +8,9 @@ use App\Traits\ResponseJson;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-
 class AuthController extends Controller
 {
+
     use ResponseJson;
 
     public function __construct()
@@ -23,7 +23,7 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|between:2,100',
             'email' => 'required|string|email|max:100|unique:users',
-            'password' => 'required|string|confirmed|min:6',
+            'password' => 'required|string|min:6',
         ]);
 
         if ($validator->fails()) {
@@ -38,6 +38,6 @@ class AuthController extends Controller
             ]
         ));
 
-        return $this->respondSuccess($user, 'User successfully registered', 201);
+        return $this->respondSuccess(null, 'User successfully registered', 201);
     }
 }
