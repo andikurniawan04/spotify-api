@@ -15,7 +15,7 @@ class Album extends Model
 
     protected $keyType = 'uuid';
 
-    protected $table = 'album';
+    protected $table = 'albums';
 
     protected $fillable = [
         'title',

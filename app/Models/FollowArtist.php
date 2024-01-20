@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\Uuid;
 
-class Podcast extends Model
+
+class FollowArtist extends Model
 {
     use HasFactory, Uuid;
 
@@ -14,23 +15,20 @@ class Podcast extends Model
 
     protected $keyType = 'uuid';
 
-    protected $table = 'podcast';
+    protected $table = 'follow_artist';
 
     protected $fillable = [
-        'name',
-        'about',
-        'image',
-        'category_id',
+        'artist_id',
         'user_id'
     ];
+
+    public function artist()
+    {
+        return $this->belongsTo(Artist::class, 'artist_id');
+    }
 
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
-    }
-
-    public function category()
-    {
-        return $this->belongsTo(PodcastCategory::class, 'category_id');
     }
 }

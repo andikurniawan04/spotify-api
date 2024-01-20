@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Traits\Uuid;
 
 
-class Concert extends Model
+class ArtistSong extends Model
 {
     use HasFactory, Uuid;
 
@@ -15,18 +15,20 @@ class Concert extends Model
 
     protected $keyType = 'uuid';
 
-    protected $table = 'concert';
+    protected $table = 'artist_song';
 
     protected $fillable = [
-        'location',
-        'longtitude',
-        'latitude',
-        'event_at',
-        'url_ticket'
+        'artist_id',
+        'song_id'
     ];
 
-    public function artistConcert()
+    public function artist()
     {
-        return $this->hasMany(ArtistConcert::class, 'concert_id');
+        return $this->belongsTo(Artist::class, 'artist_id');
+    }
+
+    public function song()
+    {
+        return $this->belongsTo(User::class, 'song_id');
     }
 }

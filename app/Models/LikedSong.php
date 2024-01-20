@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Traits\Uuid;
 
 
-class Playlist extends Model
+class LikedSong extends Model
 {
     use HasFactory, Uuid;
 
@@ -15,13 +15,11 @@ class Playlist extends Model
 
     protected $keyType = 'uuid';
 
-    protected $table = 'playlist';
+    protected $table = 'artist_song';
 
     protected $fillable = [
-        'name',
-        'description',
-        'category_id',
-        'user_id'
+        'user_id',
+        'song_id'
     ];
 
     public function user()
@@ -29,13 +27,8 @@ class Playlist extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function followPlaylist()
+    public function song()
     {
-        return $this->hasMany(Playlist::class, 'playlist_id');
-    }
-
-    public function category()
-    {
-        return $this->belongsTo(PodcastCategory::class, 'category_id');
+        return $this->belongsTo(Song::class, 'song_id');
     }
 }
