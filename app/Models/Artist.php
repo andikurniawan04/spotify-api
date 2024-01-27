@@ -25,6 +25,10 @@ class Artist extends Model
         'images'
     ];
 
+    protected $hidden = [
+        'laravel_through_key'
+    ];
+
     public function followArtist()
     {
         return $this->hasMany(FollowArtist::class, 'artist_id');
@@ -38,5 +42,10 @@ class Artist extends Model
     public function artistConcert()
     {
         return $this->hasMany(ArtistConcert::class, 'artist_id');
+    }
+
+    public function albumArtist()
+    {
+        return $this->hasMany(AlbumArtist::class, 'artist_id');
     }
 }

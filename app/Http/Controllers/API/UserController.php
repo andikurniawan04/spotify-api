@@ -41,6 +41,40 @@ class UserController extends Controller
             "artist_id" => $artist->id
         ]);
 
-        return $this->respondSuccess(null, 'Data was saved succesfully', 201);
+        return $this->respondSuccess(null, 'Follow the artist was succesfully', 200);
+    }
+
+    public function unfollowArtist(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'artist_id' => ['required', 'string'],
+        ]);
+
+        if ($validator->fails()) {
+            return $this->respondError($validator->errors(), 'Validation Error', 422);
+        }
+
+        $artist = Artist::where('id', $request->artist_id)->first();
+
+        if ($validator->fails()) {
+            return $this->respondError($validator->errors(), 'Validation Error', 422);
+        }
+
+        $artist = Artist::where('id', $request->artist_id)->first();
+
+        if (!$artist) {
+            return $this->respondError(null, 'Artist Not Found', 404);
+        }
+
+        $unfollowArtist = FollowArtist::where('user_id', Auth::user()->id)->where('artist_id', $artist->id)->first();
+
+        if (!$unfollowArtist) {
+
+            return $this->respondSuccess(null, 'User is aiready unfollow the artist', 200);
+        }
+
+        $unfollowArtist->delete();
+
+        return $this->respondSuccess(null, 'Unfollow the artist was succesfully', 200);
     }
 }

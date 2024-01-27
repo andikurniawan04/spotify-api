@@ -31,6 +31,7 @@ Route::middleware('jwt.verify')->group(function () {
     Route::get('/artist/{id?}', [ArtistController::class, 'index']);
 
     Route::post('/me/following/artist', [UserController::class, 'followArtist']);
+    Route::delete('/me/following/artist', [UserController::class, 'unfollowArtist']);
 
 
 

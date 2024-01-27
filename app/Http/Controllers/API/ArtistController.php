@@ -12,7 +12,7 @@ class ArtistController extends Controller
 
     public function index($id = "")
     {
-        $data = Artist::where('id', $id)->first();
+        $data = Artist::where('id', $id)->select('artists.*')->withCount('followArtist as followers')->first();
 
         if (!$data) {
             return $this->respondError(null, 'Data Not Found', 404);

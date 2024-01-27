@@ -22,7 +22,7 @@ trait ResponseJson
         $response['status'] = false;
         $response['message'] = $message;
         if (!empty($data)) {
-            $response['data'] = $data;
+            $response['error'] = $data;
         }
 
         return response()->json($response, $status);

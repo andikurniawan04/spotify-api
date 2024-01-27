@@ -3,19 +3,23 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
-
+use App\Models\Album;
+use App\Traits\ResponseJson;
 
 class AlbumController extends Controller
 {
+    use ResponseJson;
+
     public function index($id = "")
     {
-        if (!$id) {
-            return "error";
+        $album = Album::where('id', $id)->with(['artist' => function ($query) {
+            $query->select('artists.id', 'name');
+        }])->first();
+
+        if (!$album) {
+            return $this->respondError(null, 'Data Not Found', 404);
         }
-        return response()->json([
-            "message" => "andi"
-        ], 200);
+
+        return $this->respondSuccess($album, null, 200);
     }
 }
