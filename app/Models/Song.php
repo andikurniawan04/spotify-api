@@ -14,7 +14,7 @@ class Song extends Model
 
     protected $keyType = 'uuid';
 
-    protected $table = 'artist';
+    protected $table = 'songs';
 
     protected $fillable = [
         'title',
@@ -27,13 +27,25 @@ class Song extends Model
         return $this->belongsTo(Album::class);
     }
 
-    public function artistSong()
-    {
-        return $this->hasMany(ArtistSong::class);
-    }
+    // public function artistSong()
+    // {
+    //     return $this->hasMany(ArtistSong::class);
+    // }
 
     public function likedSong()
     {
         return $this->hasMany(LikedSong::class);
+    }
+
+    public function artist()
+    {
+        return $this->hasManyThrough(
+            Artist::class,
+            ArtistSong::class,
+            'song_id', // Foreign key pada ArtistSong yang merujuk ke Song
+            'id', // Primary key pada Artist yang merujuk ke ArtistSong
+            'id', // Primary key pada Song
+            'artist_id' // Foreign key pada ArtistSong yang merujuk ke Artist
+        );
     }
 }

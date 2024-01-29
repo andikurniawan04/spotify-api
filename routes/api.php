@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\AlbumController;
 use App\Http\Controllers\API\ArtistController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\SongController;
 use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +30,7 @@ Route::middleware('jwt.verify')->group(function () {
     Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::get('/album/{id?}', [AlbumController::class, 'index']);
     Route::get('/artist/{id?}', [ArtistController::class, 'index']);
+    Route::get('/song/{id?}', [SongController::class, 'index']);
 
     Route::post('/me/following/artist', [UserController::class, 'followArtist']);
     Route::delete('/me/following/artist', [UserController::class, 'unfollowArtist']);

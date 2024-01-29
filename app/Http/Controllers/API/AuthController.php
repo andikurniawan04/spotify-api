@@ -40,7 +40,6 @@ class AuthController extends Controller
 
         return response()->json([
             "status" => true,
-            "user" => auth()->guard('api')->user(),
             "access-token" => $token
         ]);
     }
