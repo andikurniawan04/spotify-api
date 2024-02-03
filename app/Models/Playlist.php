@@ -15,13 +15,14 @@ class Playlist extends Model
 
     protected $keyType = 'uuid';
 
-    protected $table = 'playlist';
+    protected $table = 'playlists';
 
     protected $fillable = [
         'name',
         'description',
         'category_id',
-        'user_id'
+        'user_id',
+        'image'
     ];
 
     public function user()
@@ -37,5 +38,17 @@ class Playlist extends Model
     public function category()
     {
         return $this->belongsTo(PodcastCategory::class, 'category_id');
+    }
+
+    public function song()
+    {
+        return $this->hasManyThrough(
+            Song::class,
+            PlaylistSong::class,
+            'playlist_id', // Foreign key pada PlaylistSong yang merujuk ke Song
+            'id', // Primary key pada Song yang merujuk ke PlaylistSong
+            'id', // Primary key pada Playlist
+            'song_id' // Foreign key pada PlaylistSong yang merujuk ke Artist
+        );
     }
 }

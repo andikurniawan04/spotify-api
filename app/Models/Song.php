@@ -22,6 +22,10 @@ class Song extends Model
         'album_id',
     ];
 
+    protected $hidden = [
+        'laravel_through_key'
+    ];
+
     public function album()
     {
         return $this->belongsTo(Album::class);
