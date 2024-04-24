@@ -15,7 +15,7 @@ class ArtistSong extends Model
 
     protected $keyType = 'uuid';
 
-    protected $table = 'artist_song';
+    protected $table = 'artist_songs';
 
     protected $fillable = [
         'artist_id',

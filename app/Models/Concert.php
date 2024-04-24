@@ -15,7 +15,7 @@ class Concert extends Model
 
     protected $keyType = 'uuid';
 
-    protected $table = 'concert';
+    protected $table = 'concerts';
 
     protected $fillable = [
         'location',

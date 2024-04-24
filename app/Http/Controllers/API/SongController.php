@@ -12,7 +12,9 @@ class SongController extends Controller
 
     public function index($id = "")
     {
-        $song = Song::where('id', $id)->with(['artist' => function ($query) {
+        $song = Song::where('id', $id)->with(['album' => function ($q) {
+            
+        }, 'artist' => function ($query) {
             $query->select('artists.id', 'name');
         }])->first();
 

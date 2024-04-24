@@ -15,7 +15,7 @@ class FollowArtist extends Model
 
     protected $keyType = 'uuid';
 
-    protected $table = 'follow_artist';
+    protected $table = 'follow_artists';
 
     protected $fillable = [
         'artist_id',

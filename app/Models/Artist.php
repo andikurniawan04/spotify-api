@@ -26,7 +26,10 @@ class Artist extends Model
     ];
 
     protected $hidden = [
-        'laravel_through_key'
+        'laravel_through_key',
+        'created_at',
+        'updated_at',
+        'deleted_at',
     ];
 
     public function followArtist()

@@ -6,8 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\Uuid;
 
-
-class Episode extends Model
+class PodcastEpisode extends Model
 {
     use HasFactory, Uuid;
 
@@ -15,18 +14,20 @@ class Episode extends Model
 
     protected $keyType = 'uuid';
 
-    protected $table = 'episode';
+    protected $table = 'podcast_episodes';
 
     protected $fillable = [
-        'title',
+        'name',
         'description',
-        'date',
-        'duration',
-        'podcast_id',
+        'image',
+        'release_date',
+        'duration_ms',
+        'file',
+        'podcast_id'
     ];
 
     public function podcast()
     {
-        return $this->belongsTo(Podcast::class);
+        return $this->belongsTo(Podcast::class, 'podcast_id');
     }
 }

@@ -15,7 +15,7 @@ class ArtistConcert extends Model
 
     protected $keyType = 'uuid';
 
-    protected $table = 'artist_concert';
+    protected $table = 'artist_concerts';
 
     protected $fillable = [
         'artist_id',

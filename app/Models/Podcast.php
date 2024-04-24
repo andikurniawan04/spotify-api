@@ -14,7 +14,7 @@ class Podcast extends Model
 
     protected $keyType = 'uuid';
 
-    protected $table = 'podcast';
+    protected $table = 'podcasts';
 
     protected $fillable = [
         'name',

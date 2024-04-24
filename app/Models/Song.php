@@ -23,7 +23,11 @@ class Song extends Model
     ];
 
     protected $hidden = [
-        'laravel_through_key'
+        'album_id',
+        'laravel_through_key',
+        'created_at',
+        'updated_at',
+        'deleted_at',
     ];
 
     public function album()

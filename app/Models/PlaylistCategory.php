@@ -15,7 +15,7 @@ class PlaylistCategory extends Model
 
     protected $keyType = 'uuid';
 
-    protected $table = 'playlist_category';
+    protected $table = 'playlist_categories';
 
     protected $fillable = [
         'name',

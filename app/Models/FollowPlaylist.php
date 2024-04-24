@@ -15,7 +15,7 @@ class FollowPlaylist extends Model
 
     protected $keyType = 'uuid';
 
-    protected $table = 'follow_playlist';
+    protected $table = 'follow_playlists';
 
     protected $fillable = [
         'playlist_id',

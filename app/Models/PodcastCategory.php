@@ -15,7 +15,7 @@ class PodcastCategory extends Model
 
     protected $keyType = 'uuid';
 
-    protected $table = 'podcast_category';
+    protected $table = 'podcast_categories';
 
     protected $fillable = [
         'name',

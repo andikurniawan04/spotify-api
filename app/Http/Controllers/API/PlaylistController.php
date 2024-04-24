@@ -13,7 +13,11 @@ class PlaylistController extends Controller
     public function index($id = "")
     {
         $playlist = Playlist::where('id', $id)->with(['song' => function ($query) {
-            $query->select('songs.id', 'title');
+            $query->with(['artist' => function ($query) {
+                $query->select('artists.id', 'name');
+            }])->select('songs.id', 'title');
+        }, 'user' => function ($q) {
+            $q->select('id', 'name');
         }])->first();
 
         if (!$playlist) {

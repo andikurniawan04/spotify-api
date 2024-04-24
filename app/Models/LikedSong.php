@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\Uuid;
 
-
 class LikedSong extends Model
 {
     use HasFactory, Uuid;
@@ -15,7 +14,7 @@ class LikedSong extends Model
 
     protected $keyType = 'uuid';
 
-    protected $table = 'artist_song';
+    protected $table = 'liked_songs';
 
     protected $fillable = [
         'user_id',

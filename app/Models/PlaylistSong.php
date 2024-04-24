@@ -15,7 +15,7 @@ class PlaylistSong extends Model
 
     protected $keyType = 'uuid';
 
-    protected $table = 'playlist_song';
+    protected $table = 'playlist_songs';
 
     protected $fillable = [
         'playlist_id',

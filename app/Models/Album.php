@@ -24,6 +24,13 @@ class Album extends Model
         'thumbnail'
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
+
     public function albumArtist()
     {
         return $this->hasMany(AlbumArtist::class, 'album_id');

@@ -8,7 +8,9 @@ trait ResponseJson
     {
         $response = [];
         $response['status'] = true;
-        $response['message'] = $message;
+        if (!empty($message)) {
+            $response['message'] = $message;
+        }
         if (!empty($data)) {
             $response['data'] = $data;
         }

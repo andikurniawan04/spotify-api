@@ -14,7 +14,7 @@ class Role extends Model
 
     protected $keyType = 'uuid';
 
-    protected $table = 'role';
+    protected $table = 'roles';
 
     protected $fillable = [
         'name',

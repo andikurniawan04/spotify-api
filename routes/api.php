@@ -4,6 +4,8 @@ use App\Http\Controllers\API\AlbumController;
 use App\Http\Controllers\API\ArtistController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\PlaylistController;
+use App\Http\Controllers\API\PodcastController;
+use App\Http\Controllers\API\PodcastEpisodeController;
 use App\Http\Controllers\API\SongController;
 use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
@@ -24,8 +26,6 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-
-
 Route::middleware('jwt.verify')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
@@ -33,10 +33,22 @@ Route::middleware('jwt.verify')->group(function () {
     Route::get('/artist/{id?}', [ArtistController::class, 'index']);
     Route::get('/song/{id?}', [SongController::class, 'index']);
     Route::get('/playlist/{id?}', [PlaylistController::class, 'index']);
+    Route::get('/episode/{id?}', [PodcastEpisodeController::class, 'index']);
 
+    // Follow Artist
+    Route::get('/me/following/artist', [UserController::class, 'listFollowArtist']);
     Route::post('/me/following/artist', [UserController::class, 'followArtist']);
     Route::delete('/me/following/artist', [UserController::class, 'unfollowArtist']);
 
+    // Liked Song
+    Route::get('/me/like/song', [UserController::class, 'listLikedSong']);
+    Route::post('/me/like/song', [UserController::class, 'addLikedSong']);
+    Route::delete('/me/like/song', [UserController::class, 'removeLikedSong']);
+
+    // Saved Podcast Episode
+    Route::get('/me/saved/episode', [UserController::class, 'listSavedEpisode']);
+    Route::post('/me/saved/episode', [UserController::class, 'saveEpisode']);
+    Route::delete('/me/saved/episode', [UserController::class, 'removeSavedEpisode']);
 
 
     // User
