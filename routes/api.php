@@ -37,6 +37,7 @@ Route::middleware('jwt.verify')->group(function () {
 
     // Follow Artist
     Route::get('/me/following/artist', [UserController::class, 'listFollowArtist']);
+    Route::get('/me/following/artist/contains', [UserController::class, 'checkFollowingArtist']);
     Route::post('/me/following/artist', [UserController::class, 'followArtist']);
     Route::delete('/me/following/artist', [UserController::class, 'unfollowArtist']);
 
