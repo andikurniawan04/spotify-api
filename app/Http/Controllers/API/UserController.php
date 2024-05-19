@@ -66,29 +66,31 @@ class UserController extends Controller
     public function followArtist(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'artist_id' => ['required', 'string'],
+            'artist_id' => ['required', 'array'],
         ]);
 
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 'Validation Error', 422);
         }
 
-        $artist = Artist::where('id', $request->artist_id)->first();
+        $artistId = $request->artist_id;
 
-        if (!$artist) {
+        $artist = Artist::whereIn('id', $artistId)->pluck('id')->toArray();
+
+        if (count($artist) != count($artistId)) {
             return $this->respondError(null, 'Artist Not Found', 404);
         }
 
-        $followArtist = FollowArtist::where('user_id', Auth::user()->id)->where('artist_id', $artist->id)->first();
+        foreach ($artistId as $id) {
+            $followArtist = FollowArtist::where('user_id', Auth::user()->id)->where('artist_id', $id)->first();
 
-        if ($followArtist) {
-            return $this->respondSuccess(null, 'User is aiready follow the artist', 200);
+            if (!$followArtist) {
+                FollowArtist::create([
+                    "user_id" => Auth::user()->id,
+                    "artist_id" => $id
+                ]);
+            }
         }
-
-        FollowArtist::create([
-            "user_id" => Auth::user()->id,
-            "artist_id" => $artist->id
-        ]);
 
         return $this->respondSuccess(null, 'Follow the artist was succesfully', 200);
     }
@@ -96,36 +98,31 @@ class UserController extends Controller
     public function unfollowArtist(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'artist_id' => ['required', 'string'],
+            'artist_id' => ['required', 'array'],
         ]);
 
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 'Validation Error', 422);
         }
 
-        $artist = Artist::where('id', $request->artist_id)->first();
+        $artistId = $request->artist_id;
 
-        if ($validator->fails()) {
-            return $this->respondError($validator->errors(), 'Validation Error', 422);
-        }
+        $artist = Artist::whereIn('id', $artistId)->pluck('id')->toArray();
 
-        $artist = Artist::where('id', $request->artist_id)->first();
-
-        if (!$artist) {
+        if (count($artist) != count($artistId)) {
             return $this->respondError(null, 'Artist Not Found', 404);
         }
 
-        $unfollowArtist = FollowArtist::where('user_id', Auth::user()->id)->where('artist_id', $artist->id)->first();
+        foreach ($artistId as $id) {
+            $followArtist = FollowArtist::where('user_id', Auth::user()->id)->where('artist_id', $id)->first();
 
-        if (!$unfollowArtist) {
-            return $this->respondSuccess(null, 'User is aiready unfollow the artist', 200);
+            if ($followArtist) {
+                $followArtist->delete();
+            }
         }
-
-        $unfollowArtist->delete();
 
         return $this->respondSuccess(null, 'Unfollow the artist was succesfully', 200);
     }
-
 
     public function listLikedSong()
     {
@@ -143,29 +140,31 @@ class UserController extends Controller
     public function addLikedSong(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'song_id' => ['required', 'string'],
+            'song_id' => ['required', 'array'],
         ]);
 
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 'Validation Error', 422);
         }
 
-        $song = Song::where('id', $request->song_id)->first();
+        $songId = $request->song_id;
 
-        if (!$song) {
+        $song = Song::whereIn('id', $songId)->pluck('id')->toArray();
+
+        if (count($song) != count($songId)) {
             return $this->respondError(null, 'Song Not Found', 404);
         }
 
-        $likeSong = LikedSong::where('user_id', Auth::user()->id)->where('song_id', $song->id)->first();
+        foreach ($songId as $id) {
+            $likeSong = LikedSong::where('user_id', Auth::user()->id)->where('song_id', $id)->first();
 
-        if ($likeSong) {
-            return $this->respondSuccess(null, 'User is aiready like the song', 200);
+            if (!$likeSong) {
+                LikedSong::create([
+                    "user_id" => Auth::user()->id,
+                    "song_id" => $id
+                ]);
+            }
         }
-
-        LikedSong::create([
-            "user_id" => Auth::user()->id,
-            "song_id" => $song->id
-        ]);
 
         return $this->respondSuccess(null, 'Like song was succesfully', 200);
     }
@@ -173,26 +172,29 @@ class UserController extends Controller
     public function removeLikedSong(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'song_id' => ['required', 'string'],
+            'song_id' => ['required', 'array'],
         ]);
 
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 'Validation Error', 422);
         }
 
-        $song = Song::where('id', $request->song_id)->first();
+        $songId = $request->song_id;
 
-        if (!$song) {
+        $song = Song::whereIn('id', $songId)->pluck('id')->toArray();
+
+
+        if (count($song) != count($songId)) {
             return $this->respondError(null, 'Song Not Found', 404);
         }
 
-        $likeSong = LikedSong::where('user_id', Auth::user()->id)->where('song_id', $song->id)->first();
+        foreach ($songId as $id) {
+            $likeSong = LikedSong::where('user_id', Auth::user()->id)->where('song_id', $id)->first();
 
-        if (!$likeSong) {
-            return $this->respondSuccess(null, 'User is aiready remove the like from the song', 200);
+            if ($likeSong) {
+                $likeSong->delete();
+            }
         }
-
-        $likeSong->delete();
 
         return $this->respondSuccess(null, 'Remove like song was succesfully', 200);
     }
@@ -212,29 +214,31 @@ class UserController extends Controller
     public function saveEpisode(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'episode_id' => ['required', 'string'],
+            'episode_id' => ['required', 'array'],
         ]);
 
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 'Validation Error', 422);
         }
 
-        $episode = PodcastEpisode::where('id', $request->episode_id)->first();
+        $episodeId = $request->episode_id;
 
-        if (!$episode) {
+        $episode = PodcastEpisode::whereIn('id', $episodeId)->pluck('id')->toArray();
+
+        if (count($episode) != count($episodeId)) {
             return $this->respondError(null, 'Episode Not Found', 404);
         }
 
-        $savedEpisode = SavedEpisode::where('user_id', Auth::user()->id)->where('episode_id', $episode->id)->first();
+        foreach ($episodeId as $id) {
+            $savedEpisode = SavedEpisode::where('user_id', Auth::user()->id)->where('episode_id', $id)->first();
 
-        if ($savedEpisode) {
-            return $this->respondSuccess(null, 'User is aiready save the episode', 200);
+            if (!$savedEpisode) {
+                SavedEpisode::create([
+                    "user_id" => Auth::user()->id,
+                    "episode_id" => $id
+                ]);
+            }
         }
-
-        SavedEpisode::create([
-            "user_id" => Auth::user()->id,
-            "episode_id" => $episode->id
-        ]);
 
         return $this->respondSuccess(null, 'Save episode was succesfully', 200);
     }
@@ -242,26 +246,28 @@ class UserController extends Controller
     public function removeSavedEpisode(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'episode_id' => ['required', 'string'],
+            'episode_id' => ['required', 'array'],
         ]);
 
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 'Validation Error', 422);
         }
 
-        $episode = PodcastEpisode::where('id', $request->episode_id)->first();
+        $episodeId = $request->episode_id;
 
-        if (!$episode) {
+        $episode = PodcastEpisode::whereIn('id', $episodeId)->pluck('id')->toArray();
+
+        if (count($episode) != count($episodeId)) {
             return $this->respondError(null, 'Episode Not Found', 404);
         }
 
-        $savedEpisode = SavedEpisode::where('user_id', Auth::user()->id)->where('episode_id', $episode->id)->first();
+        foreach ($episodeId as $id) {
+            $savedEpisode = SavedEpisode::where('user_id', Auth::user()->id)->where('episode_id', $id)->first();
 
-        if (!$savedEpisode) {
-            return $this->respondSuccess(null, 'User is aiready remove the episode', 200);
+            if ($savedEpisode) {
+                $savedEpisode->delete();
+            }
         }
-
-        $savedEpisode->delete();
 
         return $this->respondSuccess(null, 'Remove episode song was succesfully', 200);
     }
